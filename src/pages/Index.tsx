@@ -4,6 +4,7 @@ import heroImage from "@/assets/hero-palms-sunset.jpg";
 import foodImage from "@/assets/vegetarian-meals.jpg";
 import villaImage from "@/assets/location.jpeg";
 import beachImage from "@/assets/beach.jpeg";
+import lumiLogo from "@/assets/lumi-logo-lightgreen.png";
 import { CheckCircle2, Leaf, Waves, Sun, Mountain, Heart } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
@@ -21,9 +22,13 @@ const Index = () => {
           backgroundPosition: 'center',
         }}
       >
-        <div className="relative z-10 max-w-2xl ml-8 md:ml-16 lg:ml-24 px-6 animate-fade-in text-left">
-          <p className="text-2xl md:text-3xl font-light text-white/90 mb-3 tracking-wide">Lumi Soulscape</p>
-          <h1 className="text-5xl md:text-7xl font-light text-white mb-6 tracking-wide">
+        <div className="relative z-10 ml-8 md:ml-16 lg:ml-24 px-6 animate-fade-in text-left">
+          <img 
+            src={lumiLogo} 
+            alt="Lumi Soulscape" 
+            className="h-24 md:h-30 lg:h-32 mb-4 drop-shadow-lg"
+          />
+          <h1 className="text-5xl md:text-5xl font-light text-white mb-6 tracking-wide">
             Yoga Retreat
           </h1>
           <div className="space-y-2 text-white/90">
