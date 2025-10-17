@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import heroImage from "@/assets/hero-palms-sunset.jpg";
-// import foodImage from "@/assets/vegetarian-meals.jpg";
+import foodImage from "@/assets/vegetarian-meals.jpg";
 import villaImage from "@/assets/location.jpeg";
 import beachImage from "@/assets/beach.jpeg";
 import { CheckCircle2, Leaf, Waves, Sun, Mountain, Heart } from "lucide-react";
@@ -131,11 +131,11 @@ const Index = () => {
               </p>
             </div>
             <div className="relative h-96 rounded-2xl overflow-hidden shadow-[var(--shadow-card)] bg-muted scroll-scale-in">
-              {/* <img 
+              <img 
                 src={foodImage}
                 alt="Vegetarian Meal"
                 className="w-full h-full object-cover"
-              /> */}
+              />
             </div>
           </div>
         </div>
