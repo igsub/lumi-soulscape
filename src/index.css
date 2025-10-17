@@ -138,4 +138,58 @@ All colors MUST be HSL.
   .text-balance {
     text-wrap: balance;
   }
+  
+  /* Zen-like scroll animations */
+  .scroll-fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .scroll-fade-in.animate {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .scroll-slide-left {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .scroll-slide-left.animate {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  .scroll-slide-right {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .scroll-slide-right.animate {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  .scroll-scale-in {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: all 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .scroll-scale-in.animate {
+    opacity: 1;
+    transform: scale(1);
+  }
+  
+  .scroll-breathe {
+    animation: breathe 4s ease-in-out infinite;
+  }
+  
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+  }
 }

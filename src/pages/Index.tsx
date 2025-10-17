@@ -1,20 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-// import heroImage from "@/assets/hero-palms-sunset.jpg";
+import heroImage from "@/assets/hero-palms-sunset.jpg";
 // import foodImage from "@/assets/vegetarian-meals.jpg";
-// import villaImage from "@/assets/villa-terrace-view.jpg";
-// import beachImage from "@/assets/santa-teresa-beach.jpg";
+import villaImage from "@/assets/location.jpeg";
+import beachImage from "@/assets/beach.jpeg";
 import { CheckCircle2, Leaf, Waves, Sun, Mountain, Heart } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const Index = () => {
+  useScrollAnimation();
+  
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
       <section 
         className="relative h-screen flex items-center justify-center text-center overflow-hidden"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4))`,
-          backgroundSize: 'cover',
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url(${heroImage})`,
+            backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
       >
@@ -38,7 +41,7 @@ const Index = () => {
       {/* Who Is It For */}
       <section className="section-padding bg-gradient-to-b from-background to-muted/30">
         <div className="container-custom">
-          <div className="max-w-3xl mx-auto text-center animate-fade-in-up">
+          <div className="max-w-3xl mx-auto text-center scroll-fade-in">
             <h2 className="text-4xl md:text-5xl font-light mb-8 text-foreground">Who is it for?</h2>
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-6">
               Our Yoga Retreat is dedicated to all kind of yogis, whether you already have experience and wish to deepen your practice or you just want to start somewhere, this space is here for you.
@@ -54,7 +57,7 @@ const Index = () => {
       <section className="section-padding bg-card">
         <div className="container-custom">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6 animate-fade-in-up">
+            <div className="space-y-6 scroll-slide-left">
               <div className="flex items-center gap-3 text-primary">
                 <Waves className="w-8 h-8" />
                 <h2 className="text-4xl md:text-5xl font-light">Location</h2>
@@ -67,12 +70,12 @@ const Index = () => {
                 Wake up to the sound of the waves, move with nature, and feel the pura vida flow in every moment.
               </p>
             </div>
-            <div className="relative h-96 rounded-2xl overflow-hidden shadow-[var(--shadow-card)] bg-muted">
-              {/* <img 
+            <div className="relative h-96 rounded-2xl overflow-hidden shadow-[var(--shadow-card)] bg-muted scroll-scale-in">
+              <img 
                 src={beachImage}
                 alt="Santa Teresa Beach"
                 className="w-full h-full object-cover"
-              /> */}
+              />
             </div>
           </div>
         </div>
@@ -82,14 +85,14 @@ const Index = () => {
       <section className="section-padding bg-gradient-to-b from-muted/30 to-background">
         <div className="container-custom">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="order-2 md:order-1 relative h-96 rounded-2xl overflow-hidden shadow-[var(--shadow-card)] bg-muted">
-              {/* <img 
+            <div className="order-2 md:order-1 relative h-96 rounded-2xl overflow-hidden shadow-[var(--shadow-card)] bg-muted scroll-scale-in">
+              <img 
                 src={villaImage}
                 alt="Villa Gaspar Terrazas"
                 className="w-full h-full object-cover"
-              /> */}
+              />
             </div>
-            <div className="order-1 md:order-2 space-y-6 animate-fade-in-up">
+            <div className="order-1 md:order-2 space-y-6 scroll-slide-right">
               <div className="flex items-center gap-3 text-primary">
                 <Leaf className="w-8 h-8" />
                 <h2 className="text-4xl md:text-5xl font-light">Where we'll stay</h2>
@@ -114,7 +117,7 @@ const Index = () => {
       <section className="section-padding bg-card">
         <div className="container-custom">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6 animate-fade-in-up">
+            <div className="space-y-6 scroll-slide-left">
               <div className="flex items-center gap-3 text-primary">
                 <Heart className="w-8 h-8" />
                 <h2 className="text-4xl md:text-5xl font-light">What we'll eat</h2>
@@ -127,7 +130,7 @@ const Index = () => {
                 deeply within yourself and the vibrant energy of Costa Rica.
               </p>
             </div>
-            <div className="relative h-96 rounded-2xl overflow-hidden shadow-[var(--shadow-card)] bg-muted">
+            <div className="relative h-96 rounded-2xl overflow-hidden shadow-[var(--shadow-card)] bg-muted scroll-scale-in">
               {/* <img 
                 src={foodImage}
                 alt="Vegetarian Meal"
@@ -142,9 +145,9 @@ const Index = () => {
       <section className="section-padding bg-gradient-to-b from-muted/30 to-background">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-light mb-12 text-center animate-fade-in-up">What's Included</h2>
+            <h2 className="text-4xl md:text-5xl font-light mb-12 text-center scroll-fade-in">What's Included</h2>
             
-            <div className="grid md:grid-cols-2 gap-6 mb-12">
+            <div className="grid md:grid-cols-2 gap-6 mb-12 scroll-fade-in">
               {[
                 "Accommodation for 7 nights in a beautiful villa surrounded by nature",
                 "Delicious meals – nourishing brunch, dinner and snacks prepared daily by our private chef",
@@ -162,7 +165,7 @@ const Index = () => {
               ))}
             </div>
 
-            <div className="bg-muted/50 rounded-2xl p-8">
+            <div className="bg-muted/50 rounded-2xl p-8 scroll-scale-in">
               <h3 className="text-2xl font-light mb-6 text-center">Optional Activities</h3>
               <div className="grid sm:grid-cols-2 gap-4">
                 {[
@@ -184,9 +187,9 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="section-padding text-primary-foreground">
+      <section className="section-padding bg-primary text-primary-foreground">
         <div className="container-custom text-center">
-          <h2 className="text-4xl md:text-5xl font-light mb-6 animate-fade-in-up">Book your spot today!</h2>
+          <h2 className="text-4xl md:text-5xl font-light mb-6 scroll-fade-in scroll-breathe">Book your spot today!</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
             Send us an email to receive the full retreat offer - lumi.soulscape@gmail.com
           </p>
