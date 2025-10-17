@@ -14,14 +14,14 @@ const Index = () => {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section 
-        className="relative h-screen flex items-center justify-center text-center overflow-hidden"
+        className="relative h-screen flex items-center overflow-hidden"
         style={{
             backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url(${heroImage})`,
             backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
       >
-        <div className="relative z-10 max-w-4xl px-6 animate-fade-in">
+        <div className="relative z-10 max-w-2xl ml-8 md:ml-16 lg:ml-24 px-6 animate-fade-in text-left">
           <p className="text-2xl md:text-3xl font-light text-white/90 mb-3 tracking-wide">Lumi Soulscape</p>
           <h1 className="text-5xl md:text-7xl font-light text-white mb-6 tracking-wide">
             Yoga Retreat
