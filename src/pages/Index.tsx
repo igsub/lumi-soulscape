@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import heroImage from "@/assets/hero-palms-sunset.jpg";
 import foodImage from "@/assets/vegetarian-meals.jpg";
 import villaImage from "@/assets/location.jpeg";
@@ -7,9 +9,79 @@ import beachImage from "@/assets/beach.jpeg";
 import lumiLogo from "@/assets/lumi-logo-lightgreen.png";
 import { CheckCircle2, Leaf, Waves, Sun, Mountain, Heart } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+
+const formSchema = z.object({
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+  email: z.string().email({
+    message: "Please enter a valid email address.",
+  }),
+});
+
+type FormData = z.infer<typeof formSchema>;
 
 const Index = () => {
   useScrollAnimation();
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+  });
+
+  const submitToGetform = async (data: FormData) => {
+    const response = await fetch('https://getform.io/f/avrmnxoa', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: data.name,
+        email: data.email,
+        source: 'Lumi Soulscape Website'
+      })
+    });
+    
+    return response.ok;
+  };
+
+  const onSubmit = async (data: FormData) => {
+    setIsSubmitting(true);
+    
+    try {
+      const success = await submitToGetform(data);
+
+      if (success) {
+        toast({
+          title: "Success!",
+          description: "Thank you for subscribing! We'll keep you updated on future retreats.",
+        });
+        reset(); // Clear the form
+      } else {
+        throw new Error('Submission failed');
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      toast({
+        title: "Oops!",
+        description: "Something went wrong. Please try again or contact us directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   
   return (
     <div className="min-h-screen">
@@ -39,6 +111,58 @@ const Index = () => {
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
           <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
             <div className="w-1 h-3 bg-white/50 rounded-full mt-2"></div>
+          </div>
+        </div>
+      </section>
+
+      {/* Sign In Section */}
+      <section className="section-padding bg-card">
+        <div className="container-custom">
+          <div className="max-w-2xl mx-auto text-center scroll-fade-in">
+            <h2 className="text-4xl md:text-5xl font-light mb-8 text-foreground">Join Our Community</h2>
+            <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+              Subscribe to our mailing list to stay updated on future retreats and wellness events.
+            </p>
+            
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="text-left block text-foreground">Name</Label>
+                  <Input
+                    id="name"
+                    placeholder="Your name"
+                    {...register("name")}
+                    className={errors.name ? "border-red-500" : ""}
+                  />
+                  {errors.name && (
+                    <p className="text-sm text-red-500 text-left">{errors.name.message}</p>
+                  )}
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-left block text-foreground">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="your.email@example.com"
+                    {...register("email")}
+                    className={errors.email ? "border-red-500" : ""}
+                  />
+                  {errors.email && (
+                    <p className="text-sm text-red-500 text-left">{errors.email.message}</p>
+                  )}
+                </div>
+              </div>
+              
+              <Button 
+                type="submit"
+                size="lg"
+                disabled={isSubmitting}
+                className="text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? "Subscribing..." : "Subscribe"}
+              </Button>
+            </form>
           </div>
         </div>
       </section>
