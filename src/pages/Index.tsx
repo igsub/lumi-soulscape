@@ -12,7 +12,7 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
@@ -30,6 +30,7 @@ const Index = () => {
   useScrollAnimation();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
   
   const {
     register,
@@ -40,27 +41,34 @@ const Index = () => {
     resolver: zodResolver(formSchema),
   });
 
-  const submitToGetform = async (data: FormData) => {
-    const response = await fetch('https://getform.io/f/avrmnxoa', {
+
+  const submitToGoogleSheets = async (data: FormData) => {    
+    const formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('email', data.email);
+    formData.append('source', 'Lumi Soulscape Website');
+    
+    const response = await fetch('https://script.google.com/macros/s/AKfycbzzNKApQcA9TPFThHeGMt4-shsXIRZkVcSfV-5dSeF0iJSygOPpWvJUmNS2-FxPsxH0/exec', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: data.name,
-        email: data.email,
-        source: 'Lumi Soulscape Website'
-      })
+      body: formData,
+      redirect: 'follow'
     });
     
-    return response.ok;
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Google Sheets error response:', errorText);
+      throw new Error(`Google Sheets submission failed: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    return result.success;
   };
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     
     try {
-      const success = await submitToGetform(data);
+      const success = await submitToGoogleSheets(data);
 
       if (success) {
         toast({
@@ -69,7 +77,7 @@ const Index = () => {
         });
         reset(); // Clear the form
       } else {
-        throw new Error('Submission failed');
+        throw new Error('Google Sheets submission failed');
       }
     } catch (error) {
       console.error('Form submission error:', error);
@@ -82,11 +90,90 @@ const Index = () => {
       setIsSubmitting(false);
     }
   };
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
+  // Track active section on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['hero', 'subscribe', 'about', 'location', 'accommodation', 'food', 'included', 'contact'];
+      const scrollPosition = window.scrollY + 100; // Offset for navbar
+
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(sectionId);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Set initial active section
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   
   return (
     <div className="min-h-screen">
+      {/* Fixed Navbar */}
+      <nav className="fixed top-0 left-0 right-0 z-50">
+        <div className="container-custom">
+          <div className="flex items-center justify-center py-6">
+            {/* Navigation Links */}
+            <div className="flex items-center space-x-12">
+              {[
+                { id: 'subscribe', label: 'Subscribe' },
+                { id: 'about', label: 'About' },
+                { id: 'location', label: 'Location' },
+                { id: 'accommodation', label: 'Stay' },
+                { id: 'food', label: 'Food' },
+                { id: 'included', label: 'Included' },
+                { id: 'contact', label: 'Contact' }
+              ].map((item) => (
+                <button 
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`relative group text-sm font-light transition-colors py-2 ${
+                    activeSection === 'hero' 
+                      ? 'text-white hover:text-white/80' 
+                      : 'text-foreground hover:text-primary'
+                  }`}
+                >
+                  {item.label}
+                  {/* Underline Animation */}
+                  <span 
+                    className={`absolute bottom-0 left-0 h-0.5 transition-all duration-300 ${
+                      activeSection === 'hero' 
+                        ? 'bg-white' 
+                        : 'bg-primary'
+                    } ${
+                      activeSection === item.id 
+                        ? 'w-full' 
+                        : 'w-0 group-hover:w-full'
+                    }`}
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </nav>
+
       {/* Hero Section */}
       <section 
+        id="hero"
         className="relative h-screen flex items-center overflow-hidden"
         style={{
             backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url(${heroImage})`,
@@ -116,7 +203,7 @@ const Index = () => {
       </section>
 
       {/* Sign In Section */}
-      <section className="section-padding bg-card">
+      <section id="subscribe" className="section-padding bg-card">
         <div className="container-custom">
           <div className="max-w-2xl mx-auto text-center scroll-fade-in">
             <h2 className="text-4xl md:text-5xl font-light mb-8 text-foreground">Join Our Community</h2>
@@ -168,7 +255,7 @@ const Index = () => {
       </section>
 
       {/* Who Is It For */}
-      <section className="section-padding bg-gradient-to-b from-background to-muted/30">
+      <section id="about" className="section-padding bg-gradient-to-b from-background to-muted/30">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center scroll-fade-in">
             <h2 className="text-4xl md:text-5xl font-light mb-8 text-foreground">Who is it for?</h2>
@@ -183,7 +270,7 @@ const Index = () => {
       </section>
 
       {/* Location */}
-      <section className="section-padding bg-card">
+      <section id="location" className="section-padding bg-card">
         <div className="container-custom">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 scroll-slide-left">
@@ -211,7 +298,7 @@ const Index = () => {
       </section>
 
       {/* Accommodation */}
-      <section className="section-padding bg-gradient-to-b from-muted/30 to-background">
+      <section id="accommodation" className="section-padding bg-gradient-to-b from-muted/30 to-background">
         <div className="container-custom">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="order-2 md:order-1 relative h-96 rounded-2xl overflow-hidden shadow-[var(--shadow-card)] bg-muted scroll-scale-in">
@@ -243,7 +330,7 @@ const Index = () => {
       </section>
 
       {/* Food */}
-      <section className="section-padding bg-card">
+      <section id="food" className="section-padding bg-card">
         <div className="container-custom">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 scroll-slide-left">
@@ -271,7 +358,7 @@ const Index = () => {
       </section>
 
       {/* What's Included */}
-      <section className="section-padding bg-gradient-to-b from-muted/30 to-background">
+      <section id="included" className="section-padding bg-gradient-to-b from-muted/30 to-background">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-light mb-12 text-center scroll-fade-in">What's Included</h2>
@@ -316,7 +403,7 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="section-padding bg-primary text-primary-foreground">
+      <section id="contact" className="section-padding bg-primary text-primary-foreground">
         <div className="container-custom text-center">
           <h2 className="text-4xl md:text-5xl font-light mb-6 scroll-fade-in scroll-breathe">Book your spot today!</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
