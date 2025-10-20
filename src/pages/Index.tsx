@@ -7,7 +7,7 @@ import foodImage from "@/assets/vegetarian-meals.jpg";
 import villaImage from "@/assets/location.jpeg";
 import beachImage from "@/assets/beach.jpeg";
 import lumiLogo from "@/assets/lumi-logo-lightgreen.png";
-import { CheckCircle2, Leaf, Waves, Sun, Mountain, Heart } from "lucide-react";
+import { CheckCircle2, Leaf, Waves, Sun, Mountain, Heart, Menu, X } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -31,6 +31,7 @@ const Index = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   const {
     register,
@@ -99,6 +100,7 @@ const Index = () => {
         block: 'start'
       });
     }
+    setIsMobileMenuOpen(false); // Close mobile menu after navigation
   };
 
   // Track active section on scroll
@@ -129,13 +131,13 @@ const Index = () => {
     <div className="min-h-screen">
       {/* Fixed Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50">
-        <div className="container-custom">
-          <div className="flex items-center justify-center py-6">
-            {/* Navigation Links */}
-            <div className="flex items-center space-x-12">
+        <div className="container-custom relative">
+          <div className="flex items-center justify-center py-6 md:justify-center">
+            {/* Desktop Navigation Links */}
+            <div className="hidden md:flex items-center space-x-12">
               {[
                 { id: 'subscribe', label: 'Subscribe' },
-                { id: 'about', label: 'About' },
+                { id: 'about', label: 'Who is it for?' },
                 { id: 'location', label: 'Location' },
                 { id: 'accommodation', label: 'Stay' },
                 { id: 'food', label: 'Food' },
@@ -146,7 +148,7 @@ const Index = () => {
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
                   className={`relative group text-sm font-light transition-colors py-2 ${
-                    activeSection === 'hero' 
+                    activeSection === 'hero' || activeSection === 'contact'
                       ? 'text-white hover:text-white/80' 
                       : 'text-foreground hover:text-primary'
                   }`}
@@ -155,7 +157,7 @@ const Index = () => {
                   {/* Underline Animation */}
                   <span 
                     className={`absolute bottom-0 left-0 h-0.5 transition-all duration-300 ${
-                      activeSection === 'hero' 
+                      activeSection === 'hero' || activeSection === 'contact'
                         ? 'bg-white' 
                         : 'bg-primary'
                     } ${
@@ -167,8 +169,58 @@ const Index = () => {
                 </button>
               ))}
             </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              className={`md:hidden absolute right-6 top-1/2 -translate-y-1/2 z-50 transition-colors ${
+                activeSection === 'hero' || activeSection === 'contact'
+                  ? 'text-white hover:text-white/80' 
+                  : 'text-foreground hover:text-primary'
+              }`}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? <X className="w-8 h-8 text-black" /> : <Menu className="w-8 h-8" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Menu Overlay */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden fixed inset-0 bg-white/95 backdrop-blur-md z-40">
+            <div className="flex flex-col items-center justify-center h-full space-y-8">
+              {[
+                { id: 'subscribe', label: 'Subscribe' },
+                { id: 'about', label: 'Who is it for?' },
+                { id: 'location', label: 'Location' },
+                { id: 'accommodation', label: 'Stay' },
+                { id: 'food', label: 'Food' },
+                { id: 'included', label: 'Included' },
+                { id: 'contact', label: 'Contact' }
+              ].map((item) => (
+                <button 
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`relative group text-xl font-light transition-colors py-3 ${
+                    activeSection === item.id 
+                      ? 'text-primary' 
+                      : 'text-foreground hover:text-primary'
+                  }`}
+                >
+                  {item.label}
+                  {/* Underline Animation for Mobile */}
+                  <span 
+                    className={`absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 ${
+                      activeSection === item.id 
+                        ? 'w-full' 
+                        : 'w-0 group-hover:w-full'
+                    }`}
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}
@@ -195,10 +247,17 @@ const Index = () => {
             <p className="text-xl md:text-2xl font-light">24.01 - 31.01.2026</p>
           </div>
         </div>
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-white/50 rounded-full mt-2"></div>
-          </div>
+        
+        {/* Sign Up Now Button */}
+        <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-10">
+          <Button 
+            size="lg" 
+            variant="secondary"
+            className="text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
+            asChild
+          >
+            <a href="mailto:lumi.soulscape@gmail.com">Sign Up Now</a>
+          </Button>
         </div>
       </section>
 
@@ -402,31 +461,34 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section id="contact" className="section-padding bg-primary text-primary-foreground">
-        <div className="container-custom text-center">
-          <h2 className="text-4xl md:text-5xl font-light mb-6 scroll-fade-in scroll-breathe">Book your spot today!</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-            Send us an email to receive the full retreat offer - lumi.soulscape@gmail.com
-          </p>
-          <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-            We can't wait to meet you and enjoy our time in Costa Rica together!
-          </p>
-          <Button 
-            size="lg" 
-            variant="secondary"
-            className="text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
-            asChild
-          >
-            <a href="mailto:lumi.soulscape@gmail.com">Contact Us</a>
-          </Button>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-8 text-center text-sm text-muted-foreground bg-card">
-        <p>© 2026 Lumi Soulscape Costa Rica. All rights reserved.</p>
-      </footer>
+      {/* CTA Section + Footer */}
+      <div className="min-h-screen bg-primary text-primary-foreground flex flex-col">
+        {/* Contact Content */}
+        <section id="contact" className="flex-1 flex items-center justify-center px-6 md:px-12">
+          <div className="container-custom text-center">
+            <h2 className="text-4xl md:text-5xl font-light mb-6 scroll-fade-in scroll-breathe">Book your spot today!</h2>
+            <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
+              Send us an email to receive the full retreat offer - lumi.soulscape@gmail.com
+            </p>
+            <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
+              We can't wait to meet you and enjoy our time in Costa Rica together!
+            </p>
+            <Button 
+              size="lg" 
+              variant="secondary"
+              className="text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
+              asChild
+            >
+              <a href="mailto:lumi.soulscape@gmail.com">Contact Us</a>
+            </Button>
+          </div>
+        </section>
+        
+        {/* Footer */}
+        <footer className="py-8 text-center text-sm text-muted-foreground bg-card">
+          <p>© 2026 Lumi Soulscape Costa Rica. All rights reserved.</p>
+        </footer>
+      </div>
     </div>
   );
 };
