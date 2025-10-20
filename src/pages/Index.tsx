@@ -262,7 +262,7 @@ const Index = () => {
       </section>
 
       {/* Sign In Section */}
-      <section id="subscribe" className="section-padding bg-card">
+      <section id="subscribe" className="section-padding bg-card min-h-screen flex items-center">
         <div className="container-custom">
           <div className="max-w-2xl mx-auto text-center scroll-fade-in">
             <h2 className="text-4xl md:text-5xl font-light mb-8 text-foreground">Join Our Community</h2>
@@ -314,7 +314,7 @@ const Index = () => {
       </section>
 
       {/* Who Is It For */}
-      <section id="about" className="section-padding bg-gradient-to-b from-background to-muted/30">
+      <section id="about" className="section-padding bg-gradient-to-b from-background to-muted/30 min-h-screen flex items-center">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center scroll-fade-in">
             <h2 className="text-4xl md:text-5xl font-light mb-8 text-foreground">Who is it for?</h2>
@@ -329,7 +329,7 @@ const Index = () => {
       </section>
 
       {/* Location */}
-      <section id="location" className="section-padding bg-card">
+      <section id="location" className="section-padding bg-card min-h-screen flex items-center">
         <div className="container-custom">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 scroll-slide-left">
@@ -357,7 +357,7 @@ const Index = () => {
       </section>
 
       {/* Accommodation */}
-      <section id="accommodation" className="section-padding bg-gradient-to-b from-muted/30 to-background">
+      <section id="accommodation" className="section-padding bg-gradient-to-b from-muted/30 to-background min-h-screen flex items-center">
         <div className="container-custom">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="order-2 md:order-1 relative h-96 rounded-2xl overflow-hidden shadow-[var(--shadow-card)] bg-muted scroll-scale-in">
@@ -389,7 +389,7 @@ const Index = () => {
       </section>
 
       {/* Food */}
-      <section id="food" className="section-padding bg-card">
+      <section id="food" className="section-padding bg-card min-h-screen flex items-center">
         <div className="container-custom">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 scroll-slide-left">
@@ -417,7 +417,7 @@ const Index = () => {
       </section>
 
       {/* What's Included */}
-      <section id="included" className="section-padding bg-gradient-to-b from-muted/30 to-background">
+      <section id="included" className="section-padding bg-gradient-to-b from-muted/30 to-background min-h-screen flex items-center">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-light mb-12 text-center scroll-fade-in">What's Included</h2>
