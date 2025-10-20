@@ -132,9 +132,12 @@ const Index = () => {
       {/* Fixed Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50">
         <div className="container-custom relative">
-          <div className="flex items-center justify-center py-6 md:justify-center">
+          <div className="flex items-center justify-between py-6 px-6">
+            {/* Spacer for mobile to center desktop nav */}
+            <div className="md:hidden w-8 h-8"></div>
+            
             {/* Desktop Navigation Links */}
-            <div className="hidden md:flex items-center space-x-12">
+            <div className="hidden md:flex items-center space-x-12 mx-auto">
               {[
                 { id: 'subscribe', label: 'Subscribe' },
                 { id: 'about', label: 'Who is it for?' },
@@ -172,7 +175,7 @@ const Index = () => {
 
             {/* Mobile Menu Button */}
             <button
-              className={`md:hidden absolute right-6 top-1/2 -translate-y-1/2 z-50 transition-colors ${
+              className={`md:hidden z-50 transition-colors ${
                 activeSection === 'hero' || activeSection === 'contact'
                   ? 'text-white hover:text-white/80' 
                   : 'text-foreground hover:text-primary'
