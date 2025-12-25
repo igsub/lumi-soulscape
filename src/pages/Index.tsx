@@ -247,7 +247,7 @@ const Index = () => {
           </h1>
           <div className="space-y-2 text-white/90">
             <p className="text-2xl md:text-3xl font-light">Santa Teresa, Costa Rica</p>
-            <p className="text-xl md:text-2xl font-light">24.01 - 31.01.2026</p>
+            <p className="text-xl md:text-2xl font-light">10.04 - 17.04.2026</p>
           </div>
         </div>
         
